@@ -1,0 +1,16 @@
+#osx
+.DS_*
+*.log
+
+#xcode
+ios/RCTUmengShare.xcodeproj/xcuserdata
+ios/RCTUmengShare.xcodeproj/project.xcworkspace
+ios/Build
+
+#android
+android/build
+android/proguard-rules.pro
+android/rn-umeng-share.iml
+
+#git
+.npmignore
