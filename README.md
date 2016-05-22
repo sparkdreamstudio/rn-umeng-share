@@ -1,5 +1,4 @@
 #rn-umeng-share
-***
 # 安装
 `npm intall rn-umeng-share`
 # 手动添加到XCode
