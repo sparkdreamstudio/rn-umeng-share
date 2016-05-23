@@ -92,8 +92,12 @@ RCT_EXPORT_METHOD(setQQData:(NSDictionary*)dic)
     __weak RCTUmengShare *weakSelf = self;
     [self.bridge.imageLoader loadImageWithTag:source.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
+                                         if(image == nil)
+                                         {
+                                             return;
+                                         }
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             [UMSocialData defaultData].extConfig.qqData.url= [dic objectForKey:@"url"];
+                                             [UMSocialData defaultData].extConfig.qqData.url= [[dic objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                                              [UMSocialData defaultData].extConfig.qqData.title= [dic objectForKey:@"title"];
                                              [UMSocialData defaultData].extConfig.qqData.shareText= [dic objectForKey:@"content"];
                                              [UMSocialData defaultData].extConfig.qqData.qqMessageType = UMSocialQQMessageTypeDefault;
@@ -113,8 +117,12 @@ RCT_EXPORT_METHOD(setQzoneData:(NSDictionary*)dic)
     __weak RCTUmengShare *weakSelf = self;
     [self.bridge.imageLoader loadImageWithTag:source.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
+                                         if(image == nil)
+                                         {
+                                             return;
+                                         }
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             [UMSocialData defaultData].extConfig.qzoneData.url= [dic objectForKey:@"url"];
+                                             [UMSocialData defaultData].extConfig.qzoneData.url= [[dic objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                                              [UMSocialData defaultData].extConfig.qzoneData.title= [dic objectForKey:@"title"];
                                              [UMSocialData defaultData].extConfig.qzoneData.shareText= [dic objectForKey:@"content"];
                                              if(error == nil)
@@ -132,8 +140,12 @@ RCT_EXPORT_METHOD(setWechatSessionData:(NSDictionary*)dic)
     __weak RCTUmengShare *weakSelf = self;
     [self.bridge.imageLoader loadImageWithTag:source.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
+                                         if(image == nil)
+                                         {
+                                             return;
+                                         }
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             [UMSocialData defaultData].extConfig.wechatSessionData.url= [dic objectForKey:@"url"];
+                                             [UMSocialData defaultData].extConfig.wechatSessionData.url= [[dic objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                                              [UMSocialData defaultData].extConfig.wechatSessionData.title= [dic objectForKey:@"title"];
                                              [UMSocialData defaultData].extConfig.wechatSessionData.shareText= [dic objectForKey:@"content"];
                                              [UMSocialData defaultData].extConfig.wechatSessionData.wxMessageType = UMSocialWXMessageTypeWeb;
@@ -152,8 +164,12 @@ RCT_EXPORT_METHOD(setWechatTimelineData:(NSDictionary*)dic)
     __weak RCTUmengShare *weakSelf = self;
     [self.bridge.imageLoader loadImageWithTag:source.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
+                                         if(image == nil)
+                                         {
+                                             return;
+                                         }
                                          dispatch_async(dispatch_get_main_queue(), ^{
-                                             [UMSocialData defaultData].extConfig.wechatTimelineData.url= [dic objectForKey:@"url"];
+                                             [UMSocialData defaultData].extConfig.wechatTimelineData.url= [[dic objectForKey:@"url"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                                              [UMSocialData defaultData].extConfig.wechatTimelineData.title= [dic objectForKey:@"title"];
                                              [UMSocialData defaultData].extConfig.wechatTimelineData.shareText= [dic objectForKey:@"content"];
                                              [UMSocialData defaultData].extConfig.wechatTimelineData.wxMessageType = UMSocialWXMessageTypeWeb;
@@ -172,17 +188,22 @@ RCT_EXPORT_METHOD(setSinaData:(NSDictionary*)dic)
     __weak RCTUmengShare *weakSelf = self;
     [self.bridge.imageLoader loadImageWithTag:source.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
-                                         dispatch_async(dispatch_get_main_queue(), ^{
-                                         });
-                                         [UMSocialData defaultData].extConfig.sinaData.shareText= [NSString stringWithFormat:@"%@-%@",[dic objectForKey:@"content"],[dic objectForKey:@"url"]];
-                                         if(error == nil)
+                                         if(image == nil)
                                          {
-                                             [UMSocialData defaultData].extConfig.sinaData.shareImage = image;
+                                             return;
                                          }
+                                         dispatch_async(dispatch_get_main_queue(), ^{
+                                             [UMSocialData defaultData].extConfig.sinaData.shareText= [NSString stringWithFormat:@"%@-%@",[dic objectForKey:@"content"],[dic objectForKey:@"url"]];
+                                             if(error == nil)
+                                             {
+                                                 [UMSocialData defaultData].extConfig.sinaData.shareImage = image;
+                                             }
+                                         });
+                                         
                                      }];
 }
 
-RCT_EXPORT_METHOD(presentSnsIconSheetView:(NSString*)content imageSource:(RCTImageSource*)imageSource snsNames:(NSArray<NSError*>*)array)
+RCT_EXPORT_METHOD(presentSnsIconSheetView:(NSString*)content imageSource:(RCTImageSource*)imageSource)
 {
     [self.bridge.imageLoader loadImageWithTag:imageSource.imageURL.absoluteString
                                      callback:^(NSError *error, UIImage *image) {
