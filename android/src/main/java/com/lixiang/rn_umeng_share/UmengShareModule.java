@@ -6,12 +6,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.facebook.common.util.UriUtil;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -30,15 +33,17 @@ import java.util.HashMap;
 
 import java.net.URLEncoder.*;
 
+import com.facebook.imagepipeline.request.*;
 
+import javax.annotation.Nullable;
 
 public class UmengShareModule extends ReactContextBaseJavaModule {
 
-  private Context context;
-  public UmengShareModule(ReactApplicationContext reactContext) {
-      super(reactContext);
-      context = reactContext.getBaseContext();
-  }
+    private Context context;
+    public UmengShareModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        context = reactContext.getBaseContext();
+    }
 
     @Override
     public String getName() {
@@ -72,8 +77,10 @@ public class UmengShareModule extends ReactContextBaseJavaModule {
                         SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE
                 };
         final Activity tempActivity = this.getCurrentActivity();
+        final Context tempContext = this.getReactApplicationContext();
         final String finalContent = content;
         final String finaltitle = title;
+        final UmengShareModule finalThis = this;
         try{
             final String ALLOWED_URI_CHARS = "@#&=*+-_.,:!?()/~'%";
 
@@ -92,8 +99,19 @@ public class UmengShareModule extends ReactContextBaseJavaModule {
 
                         }
                         else{
-                            image = new UMImage(tempActivity,
-                                    BitmapFactory.decodeFile(imageUrl));
+                            Uri uri = Uri.parse(imageUrl);
+                            Bitmap bitmap;
+                            if(uri.getScheme() == null)
+                            {
+                                int resId = finalThis.getResourceDrawableId(tempContext,imageUrl);
+                                bitmap = BitmapFactory.decodeResource(tempActivity.getResources(),resId);
+                            }
+                            else{
+                                String tempUrlString = "";
+                                tempUrlString = imageUrl.replace("file://","");
+                                bitmap = BitmapFactory.decodeFile(tempUrlString);
+                            }
+                            image = new UMImage(tempActivity,bitmap);
                         }
                         new ShareAction(tempActivity).setDisplayList(displaylist)
                                 .withText(finalContent)
@@ -110,10 +128,35 @@ public class UmengShareModule extends ReactContextBaseJavaModule {
                 }
             });
         }
-        catch (Exception e){
-            Log.e("友盟分享错误",e.toString());
+        catch (Exception e) {
+            Log.e("友盟分享错误", e.toString());
         }
+    }
 
+    private int getResourceDrawableId(Context context, @Nullable String name) {
+        if (name == null || name.isEmpty()) {
+            return 0;
+        }
+        name = name.toLowerCase().replace("-", "_");
 
+        int id = context.getResources().getIdentifier(
+                name,
+                "drawable",
+                context.getPackageName());
+        return id;
+    }
+
+    private @Nullable
+    Drawable getResourceDrawable(Context context, @Nullable String name) {
+        int resId = getResourceDrawableId(context, name);
+        return resId > 0 ? context.getResources().getDrawable(resId) : null;
+    }
+
+    private Uri getResourceDrawableUri(Context context, @Nullable String name) {
+        int resId = getResourceDrawableId(context, name);
+        return resId > 0 ? new Uri.Builder()
+                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME)
+                .path(String.valueOf(resId))
+                .build() : Uri.EMPTY;
     }
 }
