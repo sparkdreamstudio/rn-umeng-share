@@ -128,15 +128,16 @@
 	```bash
 	android {
 		defaultConfig {
+			manifestPlaceholders = [
+				Umeng_KEY:你的UmengAPPID,
+				qqAppId:"tencent"+qq appId,
+			］
 		｝
 	｝
 	dependencies {
 		...
 		compile project(':rn-umeng-share')
-		manifestPlaceholders = [
-			Umeng_KEY:你的UmengAPPID,
-            		qqAppId:"tencent"+qq appId,
-		］
+		
 		...
 	}
 	```
