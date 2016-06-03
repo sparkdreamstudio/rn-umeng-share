@@ -28,7 +28,94 @@
 	新浪微博      |node_module/rn-umeng-share/ios/RCTUumengShare/UmengSocial/UMSocial_Sdk_Extra_Frameworks/SinaSSO/libSocialSinaSSO.a libWeiboSDK.a 和 WeiboSDK.bundle
 	QQ           |node_module/rn-umeng-share/ios/RCTUumengShare/UmengSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI／libSocialQQ.a TencentOpenApi_IOS_Bundle.bundle 和 TencentOpenAPI.framework
 
-＊ 关于`.plist`的配置稍后给出
+＊ 配置`info.plist`
+
+	```
+	<?xml version="1.0" encoding="UTF-8"?>
+	<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	<plist version="1.0">
+	<dict>
+	...
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>weixin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>你的微信appId</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>eqianzhuang</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>tencent'你的qq APPid'</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>sina.54535988fd98c5f10000726d</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>QQ41D42AF9</string>
+			</array>
+		</dict>
+		</array>
+		<key>LSApplicationQueriesSchemes</key>
+		<array><string>wechat</string>
+			<string>weixin</string>
+			<string>sinaweibohd</string>
+			<string>sinaweibo</string>
+			<string>sinaweibosso</string>
+			<string>weibosdk</string>
+			<string>weibosdk2.5</string>
+			<string>mqqapi</string>
+			<string>mqq</string>
+			<string>mqqOpensdkSSoLogin</string>
+			<string>mqqconnect</string>
+			<string>mqqopensdkdataline</string>
+			<string>mqqopensdkgrouptribeshare</string>
+			<string>mqqopensdkfriend</string>
+			<string>mqqopensdkapi</string>
+			<string>mqqopensdkapiV2</string>
+			<string>mqqopensdkapiV3</string>
+			<string>mqzoneopensdk</string>
+			<string>wtloginmqq</string>
+			<string>wtloginmqq2</string>
+			<string>mqqwpa</string>
+			<string>mqzone</string>
+			<string>mqzonev2</string>
+			<string>mqzoneshare</string>
+			<string>wtloginqzone</string>
+			<string>mqzonewx</string>
+			<string>mqzoneopensdkapiV2</string>
+			<string>mqzoneopensdkapi19</string>
+			<string>mqzoneopensdkapi</string>
+			<string>mqzoneopensdk</string>
+		</array>
+	...
+	</dict>
+	</plist>
+	
+	```
 # 手动添加android平台
 * 在`android/setting.gradle`中添加
 
@@ -36,10 +123,22 @@
 	include ':rn-umeng-share'
 	project(':rn-umeng-share').projectDir = new File(rootProject.projectDir, '../node_modules/rn-umeng-share/android')
 	```
-* 在`android/app/build.gradle`中的 `dependencies`添加
+* 在`android/app/build.gradle`中的添加
 
 	```bash
-	compile project(':rn-umeng-share')
+	android {
+		defaultConfig {
+		｝
+	｝
+	dependencies {
+		...
+		compile project(':rn-umeng-share')
+		manifestPlaceholders = [
+			Umeng_KEY:你的UmengAPPID,
+            		qqAppId:"tencent"+qq appId,
+		］
+		...
+	}
 	```
 * 在`android/app/src/main/java/[...]/MainActivity.java`中
 	
