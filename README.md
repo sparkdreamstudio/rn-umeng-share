@@ -5,6 +5,7 @@
 `npm intall --save rn-umeng-share@https://github.com/sparkdreamstudio/rn-umeng-share.git`
 # 手动添加到XCode
 * 在XCode project navigator 中右键单击 Libraries -> Add Files to [你的项目名称] 进入 node_module/rn-umeng-share/ios 将 .xcodeproj 文件添加进来，并点击[你的项目名称] －> Build Phases 添加 Link Binary libRCTUmengshare.a
+* TARGETS->BUILD SETTING->Framework Search Paths 添加 $(SRCROOT)/../node_modules/rn-umeng-share/ios/RCTUmengShare/UmengSocial/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI
 * 在`Appdelegate.m`中添加如下代码
 
 	```
