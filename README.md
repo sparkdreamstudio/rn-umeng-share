@@ -9,6 +9,9 @@
 * 在`Appdelegate.m`中添加如下代码
 
 	```
+	...
+	#import "RCTUmengShare.h"
+	...
 	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 	{
   		self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
